@@ -2,9 +2,9 @@
 
 #include <stdbool.h>
 
-err_t tRegisterPlugin(T self, void *plugin) {
-    // TODO
-    (void)self;
-    (void)plugin;
-    return false;
+err_t tRegisterPlugin(T self, TPlugin plugin) {
+  // TODO
+  (void)self;
+  (void)plugin;
+  return false;
 }
