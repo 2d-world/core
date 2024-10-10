@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-void tDestroy(T self) {
+DLLEXPORT void tDestroy(T self) {
   // TODO
   (void)self;
 }

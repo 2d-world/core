@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-err_t tRegisterPlugin(T self, TPlugin plugin) {
+DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin) {
   // TODO
   (void)self;
   (void)plugin;

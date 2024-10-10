@@ -1,5 +1,11 @@
 #pragma once
 
+#if _WIN32
+#define DLLEXPORT __declspec(dllexport)
+#else
+#define DLLEXPORT
+#endif
+
 typedef struct T *T;
 typedef _Bool err_t;
 
@@ -10,7 +16,7 @@ struct THandle {
 typedef struct THandle *(*TOn)(T context, const char *event_name, void *args);
 typedef err_t (*TPlugin)(T context, TOn on);
 
-T tInit();
-err_t tRegisterPlugin(T self, TPlugin plugin);
-err_t tStart(T self);
-void tDestroy(T self);
+DLLEXPORT T tInit();
+DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin);
+DLLEXPORT err_t tStart(T self);
+DLLEXPORT void tDestroy(T self);

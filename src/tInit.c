@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 
-T tInit() {
+DLLEXPORT T tInit() {
   // TODO
   return NULL;
 }
