@@ -6,8 +6,19 @@
 #define DLLEXPORT
 #endif
 
-typedef struct T *T;
 typedef _Bool err_t;
+
+// write once, read only map
+typedef struct TMap *TMap;
+DLLEXPORT TMap TMap_new();
+DLLEXPORT void TMap_insert(TMap map, const char *key, void *value,
+                           void (*deleteValue)(void *value));
+DLLEXPORT void *TMap_search(TMap map, const char *key);
+DLLEXPORT void TMap_delete(TMap self);
+
+typedef struct T {
+  TMap map;
+} *T;
 
 struct THandle {
   void (*free)(void *actual_handle);

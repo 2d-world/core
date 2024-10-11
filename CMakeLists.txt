@@ -5,7 +5,7 @@ set(TCORE_VERSION 1.0)
 
 include_directories(include)
 
-add_library(TCore SHARED src/tInit.c src/tRegisterPlugin.c src/tStart.c src/tDestroy.c)
+add_library(TCore SHARED src/util.c src/t.c src/TMap.c)
 
 target_include_directories(TCore PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
