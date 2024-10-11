@@ -1,5 +1,6 @@
 #include "t.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,14 +22,21 @@ struct TMap {
 
 static int int_max(int self, int other) { return self > other ? self : other; }
 
-static Node createNode(const char *key, void *value,
-                       void (*deleteValue)(void *value)) {
-  Node node = (struct Node *)t_malloc(sizeof(struct Node));
-  node->key = t_strdup(key);
+static err_t createNode(const char *key, void *value,
+                        void (*deleteValue)(void *value), Node *out) {
+  Node node = (struct Node *)malloc(sizeof(struct Node));
+  if (!node) {
+    return true;
+  }
+  if (t_strdup(key, &node->key)) {
+    free(node);
+    return true;
+  }
   node->value = value;
   node->left = node->right = NULL;
   node->height = 1;
-  return node;
+  *out = node;
+  return false;
 }
 
 static int getHeight(Node node) { return node == NULL ? 0 : node->height; }
@@ -83,10 +91,10 @@ static Node balanceNode(Node node) {
   return node;
 }
 
-static Node insertNode(Node node, const char *key, void *value,
-                       void (*deleteValue)(void *value)) {
+static err_t insertNode(Node node, const char *key, void *value,
+                        void (*deleteValue)(void *value), Node *out) {
   if (node == NULL) {
-    return createNode(key, value, deleteValue);
+    return createNode(key, value, deleteValue, out);
   }
 
   int leading_same = 0;
@@ -97,26 +105,34 @@ static Node insertNode(Node node, const char *key, void *value,
   const int cmp = strcmp(node->key + leading_same, key + leading_same);
 
   if (cmp > 0) {
-    node->left = insertNode(node->left, key, value, deleteValue);
+    if (insertNode(node->left, key, value, deleteValue, &node->left)) {
+      return true;
+    }
   } else if (cmp < 0) {
-    node->right = insertNode(node->right, key, value, deleteValue);
+    if (insertNode(node->right, key, value, deleteValue, &node->right)) {
+      return true;
+    }
   } else {
-    abort();
+    return true;
   }
 
   node->height = 1 + int_max(getHeight(node->left), getHeight(node->right));
 
-  return balanceNode(node);
+  *out = balanceNode(node);
+  return false;
 }
 
 DLLEXPORT TMap TMap_new() {
-  const struct TMap result = {NULL};
-  return t_memdup(&result, sizeof(result));
+  const TMap result = malloc(sizeof(struct TMap));
+  if (result) {
+    result->root = NULL;
+  }
+  return result;
 }
 
-DLLEXPORT void TMap_insert(TMap map, const char *key, void *value,
-                           void (*deleteValue)(void *value)) {
-  map->root = insertNode(map->root, key, value, deleteValue);
+DLLEXPORT err_t TMap_insert(TMap map, const char *key, void *value,
+                            void (*deleteValue)(void *value)) {
+  return insertNode(map->root, key, value, deleteValue, &map->root);
 }
 
 DLLEXPORT void *TMap_search(TMap map, const char *key) {
