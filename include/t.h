@@ -24,8 +24,7 @@ struct THandle {
   void (*free)(void *actual_handle);
   void *actual_handle;
 };
-typedef struct THandle *(*TOn)(T context, const char *event_name, void *args);
-typedef err_t (*TPlugin)(T context, TOn on);
+typedef err_t (*TPlugin)(T context);
 
 DLLEXPORT T tInit(void);
 DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin);
