@@ -18,7 +18,7 @@ struct THandle {
   void (*free)(void *actual_handle);
   void *actual_handle;
 };
-typedef err_t (*TPlugin)(T context);
+typedef err_t (*TPlugin)(T context, TMap_search search);
 
 typedef T (*tInit)(void);
 typedef err_t (*tRegisterPlugin)(T self, TPlugin plugin);

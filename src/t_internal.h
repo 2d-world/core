@@ -24,7 +24,7 @@ struct THandle {
   void (*free)(void *actual_handle);
   void *actual_handle;
 };
-typedef err_t (*TPlugin)(T context);
+typedef err_t (*TPlugin)(T context, void *(*search)(TMap map, const char *key));
 
 DLLEXPORT T tInit(void);
 DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin);

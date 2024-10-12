@@ -43,7 +43,7 @@ DLLEXPORT T tInit(void) {
 DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin) {
   if (((TInternal *)self)->state != T_STATE_PREPARE)
     return true;
-  return plugin(self);
+  return plugin(self, TMap_search);
 }
 
 DLLEXPORT err_t tStart(T self) {
