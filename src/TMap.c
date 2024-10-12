@@ -33,6 +33,7 @@ static err_t createNode(const char *key, void *value,
     return true;
   }
   node->value = value;
+  node->deleteValue = deleteValue;
   node->left = node->right = NULL;
   node->height = 1;
   *out = node;
@@ -122,7 +123,7 @@ static err_t insertNode(Node node, const char *key, void *value,
   return false;
 }
 
-DLLEXPORT TMap TMap_new() {
+DLLEXPORT TMap TMap_new(void) {
   const TMap result = malloc(sizeof(struct TMap));
   if (result) {
     result->root = NULL;

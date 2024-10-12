@@ -10,7 +10,7 @@ typedef _Bool err_t;
 
 // write once, read only map
 typedef struct TMap *TMap;
-DLLEXPORT TMap TMap_new();
+DLLEXPORT TMap TMap_new(void);
 DLLEXPORT err_t TMap_insert(TMap map, const char *key, void *value,
                             void (*deleteValue)(void *value));
 DLLEXPORT void *TMap_search(TMap map, const char *key);
@@ -27,7 +27,7 @@ struct THandle {
 typedef struct THandle *(*TOn)(T context, const char *event_name, void *args);
 typedef err_t (*TPlugin)(T context, TOn on);
 
-DLLEXPORT T tInit();
+DLLEXPORT T tInit(void);
 DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin);
 DLLEXPORT err_t tStart(T self);
 DLLEXPORT void tDestroy(T self);

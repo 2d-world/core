@@ -16,7 +16,7 @@ typedef struct TInternal {
   TState state;
 } TInternal;
 
-DLLEXPORT T tInit() {
+DLLEXPORT T tInit(void) {
   const TMap map = TMap_new();
   TInternal internal = {{map}, T_STATE_PREPARE};
 
@@ -25,8 +25,13 @@ DLLEXPORT T tInit() {
   TMap_insert(map, "builtin.util.t_memdup", (void *)&t_memdup, NULL);
   TMap_insert(map, "builtin.util.t_strdup", (void *)&t_strdup, NULL);
 
+  TMap_insert(map, "builtin.TMap.new", (void *)&TMap_new, NULL);
+  TMap_insert(map, "builtin.TMap.insert", (void *)&TMap_insert, NULL);
+  TMap_insert(map, "builtin.TMap.search", (void *)&TMap_search, NULL);
+  TMap_insert(map, "builtin.TMap.delete", (void *)&TMap_delete, NULL);
+
   static const int VERSION = 0; // TODO: increse on release
-  TMap_insert(map, "version", (void *)&VERSION, NULL);
+  TMap_insert(map, "t.version", (void *)&VERSION, NULL);
 
   T result;
   if (t_memdup(&internal, sizeof(internal), (void **)&result)) {
@@ -46,7 +51,7 @@ DLLEXPORT err_t tStart(T self) {
     return true;
   ((TInternal *)self)->state = T_STATE_STARTED;
   err_t (*const mainLoop)(T self) =
-      (err_t(*)(T))TMap_search(self->map, "mainLoop");
+      (err_t(*)(T))TMap_search(self->map, "t.mainLoop");
   if (!mainLoop) {
     return true;
   }
