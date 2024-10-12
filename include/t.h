@@ -1,20 +1,14 @@
 #pragma once
 
-#if _WIN32
-#define DLLEXPORT __declspec(dllexport)
-#else
-#define DLLEXPORT
-#endif
-
 typedef _Bool err_t;
 
 // write once, read only map
 typedef struct TMap *TMap;
-DLLEXPORT TMap TMap_new(void);
-DLLEXPORT err_t TMap_insert(TMap map, const char *key, void *value,
-                            void (*deleteValue)(void *value));
-DLLEXPORT void *TMap_search(TMap map, const char *key);
-DLLEXPORT void TMap_delete(TMap self);
+typedef TMap (*TMap_new)(void);
+typedef err_t (*TMap_insert)(TMap map, const char *key, void *value,
+                             void (*deleteValue)(void *value));
+typedef void *(*TMap_search)(TMap map, const char *key);
+typedef void (*TMap_delete)(TMap self);
 
 typedef struct T {
   TMap map;
@@ -26,7 +20,7 @@ struct THandle {
 };
 typedef err_t (*TPlugin)(T context);
 
-DLLEXPORT T tInit(void);
-DLLEXPORT err_t tRegisterPlugin(T self, TPlugin plugin);
-DLLEXPORT err_t tStart(T self);
-DLLEXPORT void tDestroy(T self);
+typedef T (*tInit)(void);
+typedef err_t (*tRegisterPlugin)(T self, TPlugin plugin);
+typedef err_t (*tStart)(T self);
+typedef void (*tDestroy)(T self);
