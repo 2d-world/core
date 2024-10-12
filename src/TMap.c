@@ -123,7 +123,7 @@ static err_t insertNode(Node node, const char *key, void *value,
   return false;
 }
 
-DLLEXPORT TMap TMap_new(void) {
+TMap TMap_new(void) {
   const TMap result = malloc(sizeof(struct TMap));
   if (result) {
     result->root = NULL;
@@ -131,12 +131,12 @@ DLLEXPORT TMap TMap_new(void) {
   return result;
 }
 
-DLLEXPORT err_t TMap_insert(TMap map, const char *key, void *value,
-                            void (*deleteValue)(void *value)) {
+err_t TMap_insert(TMap map, const char *key, void *value,
+                  void (*deleteValue)(void *value)) {
   return insertNode(map->root, key, value, deleteValue, &map->root);
 }
 
-DLLEXPORT void *TMap_search(TMap map, const char *key) {
+void *TMap_search(TMap map, const char *key) {
   Node current = map->root;
   int leading_same = 0;
   while (current != NULL) {
@@ -170,7 +170,7 @@ static void deleteNode(Node node) {
   free(node);
 }
 
-DLLEXPORT void TMap_delete(TMap self) {
+void TMap_delete(TMap self) {
   deleteNode(self->root);
   free(self);
 }

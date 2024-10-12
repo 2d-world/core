@@ -24,3 +24,12 @@ typedef T (*tInit)(void);
 typedef err_t (*tRegisterPlugin)(T self, TPlugin plugin);
 typedef err_t (*tStart)(T self);
 typedef void (*tDestroy)(T self);
+
+#define KEY_BUILTIN_UTIL_T_MALLOC "builtin.util.t_malloc"
+#define KEY_BUILTIN_UTIL_T_REALLOC "builtin.util.t_realloc"
+#define KEY_BUILTIN_UTIL_T_MEMDUP "builtin.util.t_memdup"
+#define KEY_BUILTIN_UTIL_T_STRDUP "builtin.util.t_strdup"
+#define KEY_BUILTIN_TMAP_NEW "builtin.TMap.new"
+#define KEY_BUILTIN_TMAP_INSERT "builtin.TMap.insert"
+#define KEY_BUILTIN_TMAP_SEARCH "builtin.TMap.search"
+#define KEY_BUILTIN_TMAP_DELETE "builtin.TMap.delete"
