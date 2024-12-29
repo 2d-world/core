@@ -2,5 +2,5 @@
 
 set -e
 
-cmake -B builddir
-cmake --build builddir
+cmake -B builddir -DCMAKE_BUILD_TYPE=Release
+cmake --build builddir --config Release
